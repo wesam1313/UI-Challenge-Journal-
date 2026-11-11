@@ -6,14 +6,23 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var showingEditor = false
     @State private var entryToDelete: JournalEntry?
+    @State private var sortByBookmark = false
     private var filteredEntries: [JournalEntry] {
-        if searchText.isEmpty {
-            return viewModel.entries
+        let filtered = viewModel.entries.filter {
+            searchText.isEmpty ||
+            $0.title.localizedCaseInsensitiveContains(searchText) ||
+            $0.content.localizedCaseInsensitiveContains(searchText)
         }
 
-        return viewModel.entries.filter {
-            $0.title.localizedCaseInsensitiveContains(searchText)
-                || $0.content.localizedCaseInsensitiveContains(searchText)
+        if sortByBookmark {
+            return filtered.sorted {
+                if $0.isBookmarked == $1.isBookmarked {
+                    return $0.date > $1.date
+                }
+                return $0.isBookmarked && !$1.isBookmarked
+            }
+        } else {
+            return filtered.sorted { $0.date > $1.date }
         }
     }
     var body: some View {
@@ -94,15 +103,23 @@ struct ContentView: View {
             }
             .navigationTitle("Journal")
             .toolbar {
-                
-                Button(action: {}) {
+                Menu {
+                    Button("Sort by Bookmark") {
+                        sortByBookmark = true
+                    }
+
+                    Button("Sort by Entry Date") {
+                        sortByBookmark = false
+                    }
+                } label: {
                     Image(systemName: "line.3.horizontal.decrease")
                 }
-                
-                Button(action: {showingEditor = true}) {
+
+                Button(action: {
+                    showingEditor = true
+                }) {
                     Image(systemName: "plus")
                 }
-                
             }
             .sheet(isPresented: $showingEditor) {
                 JournalEditorView()
