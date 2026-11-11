@@ -26,7 +26,11 @@ class JournalViewModel: ObservableObject {
     func toggleBookmark(for entry: JournalEntry) {
         if let index = entries.firstIndex(where: { $0.id == entry.id }) {
             entries[index].isBookmarked.toggle()
+           
+            }
         }
+    func deleteEntry(_ entry: JournalEntry) {
+        entries.removeAll { $0.id == entry.id }
     }
 
     }
