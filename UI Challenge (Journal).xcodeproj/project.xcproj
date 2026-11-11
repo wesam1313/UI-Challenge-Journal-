@@ -11,6 +11,20 @@
     ],
   },
   "files": [
+    { "path": "UI-Challenge--Journal--Info.plist" },
+    {
+      "kind": "group",
+      "path": "ViewModels",
+      "children": [
+        { "path": "JournalViewModel.swift", "target-membership": [ "UI Challenge (Journal)/compile-sources" ] },
+      ],
+    }, {
+      "kind": "group",
+      "path": "Models",
+      "children": [
+        { "path": "JournalEntry.swift", "target-membership": [ "UI Challenge (Journal)/compile-sources" ] },
+      ],
+    },
     { "kind": "folder", "path": "UI Challenge (Journal)", "target-membership": [ "UI Challenge (Journal)" ] },
     {
       "kind": "group",
@@ -38,8 +52,11 @@
         "ENABLE_PREVIEWS": "YES",
         "ENABLE_USER_SELECTED_FILES": "readonly",
         "GENERATE_INFOPLIST_FILE": "YES",
-        "INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]": "YES",
-        "INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]": "YES",
+        "INFOPLIST_FILE": "UI-Challenge--Journal--Info.plist",
+        "INFOPLIST_KEY_UIApplicationSceneManifest_Generation[config=Debug][sdk=iphoneos*]": "YES",
+        "INFOPLIST_KEY_UIApplicationSceneManifest_Generation[config=Debug][sdk=iphonesimulator*]": "NO",
+        "INFOPLIST_KEY_UIApplicationSceneManifest_Generation[config=Release][sdk=iphoneos*]": "YES",
+        "INFOPLIST_KEY_UIApplicationSceneManifest_Generation[config=Release][sdk=iphonesimulator*]": "YES",
         "INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]": "YES",
         "INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]": "YES",
         "INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]": "YES",

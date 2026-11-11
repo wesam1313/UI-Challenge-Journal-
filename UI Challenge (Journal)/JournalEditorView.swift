@@ -2,10 +2,15 @@ import SwiftUI
 
 struct JournalEditorView: View {
     var body: some View {
-        Text("New Journal")
+        NavigationStack {
+            VStack {
+                Text("New Journal")
+            }
+            .navigationTitle("New Journal")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
-
 #Preview {
     JournalEditorView()
 }
