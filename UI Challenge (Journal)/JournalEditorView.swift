@@ -9,16 +9,36 @@ struct JournalEditorView: View {
     @State private var showingDiscardAlert = false
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(alignment: .leading, spacing: 4) {
                 TextField("Title", text: $title)
-                    .font(.title2)
-                    .padding()
-                TextField("Type your Journal", text: $content)
-                    .font(.title2)
-                    .padding()
-                TextEditor(text: $content)
-                    .font(.body)
+                    .font(.title.weight(.bold))
                     .padding(.horizontal)
+                Text((entry?.date ?? Date()).formatted(
+                    Date.FormatStyle()
+                        .day(.twoDigits)
+                        .month(.twoDigits)
+                        .year()
+                        .locale(Locale(identifier: "en_GB"))
+                ))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                
+                ZStack(alignment: .topLeading) {
+                    TextEditor(text: $content)
+                        .font(.body)
+
+                    if content.isEmpty {
+                        Text("Type your Journal...")
+                            .font(.body)
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 8)
+                            .padding(.leading, 5)
+                            .allowsHitTesting(false)
+                    }
+                }
+                .padding(.horizontal)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -38,6 +58,7 @@ struct JournalEditorView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
+                        
                         if let entry = entry {
                             viewModel.updateEntry(entry, title: title, content: content)
                         } else {
@@ -48,6 +69,7 @@ struct JournalEditorView: View {
                     } label: {
                         Image(systemName: "checkmark")
                             .font(.title3)
+                            .foregroundStyle(.black)
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(Color("Primary Purple"))

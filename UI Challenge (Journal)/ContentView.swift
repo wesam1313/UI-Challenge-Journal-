@@ -30,20 +30,21 @@ struct ContentView: View {
         NavigationStack {
             ZStack {
                 if viewModel.entries.isEmpty {
-                    VStack(spacing: 20) {
+                    VStack(spacing: 12) {
                         Image("Open Journal")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 151.39, height: 97.32)
+                            .frame(maxWidth: 150)
                         
                         Text("Begin Your Journal")
-                            .font(.title2.bold())
-                            .foregroundColor(Color("Text Accent"))
+                            .font(.title2.weight(.semibold))
+                            .foregroundColor(Color("Text Purple"))
                         
                         Text("Craft your personal diary, tap the plus icon to begin")
                             .font(.body)
                             .multilineTextAlignment(.center)
                             .foregroundColor(Color("Text Primary"))
+                            .frame(maxWidth: 300)
                     }
                     .padding()
                 } else {
@@ -54,7 +55,7 @@ struct ContentView: View {
                                 VStack(alignment: .leading, spacing: 0) {
                                     HStack {
                                         Text(entry.title)
-                                            .font(.title2.weight(.semibold))
+                                            .font(.title2.weight(.bold))
                                             .foregroundColor(Color("Text Purple"))
 
                                         Spacer()
@@ -81,7 +82,8 @@ struct ContentView: View {
                                         .padding(.top, 0)
 
                                     Text(entry.content)
-                                        .padding(.top, 10)
+                                        .lineLimit(5)
+                                        .padding(.top, 4)
                                 }
                                 .listRowSeparator(.hidden)
                                 .contentShape(Rectangle())
