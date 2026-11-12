@@ -1,22 +1,13 @@
 import Combine
+import Foundation
 
 class JournalViewModel: ObservableObject {
     
-    @Published var entries: [JournalEntry] = [
-        JournalEntry(
-            title: "wesam",
-            content: "wesam wesam wesam wesam wesamwesam wesam wesam wesam wesam",
-            isBookmarked: true
-        ),
-        JournalEntry(
-            title: "wesam",
-            content: "wesam wesam wesam wesam wesam wesam wesam wesam wesam wesam"
-        ),
-        JournalEntry(
-            title: "wesam",
-            content: "wesam wesam wesam wesam wesamwesam wesam wesam wesam wesamwesam wesam wesam wesam wesam"
-        )
-    ]
+    @Published var entries: [JournalEntry] = [] {
+        didSet {
+            saveEntries()
+        }
+    }
 
 
     func addEntry(title: String, content: String) {
@@ -38,5 +29,18 @@ class JournalViewModel: ObservableObject {
     func deleteEntry(_ entry: JournalEntry) {
         entries.removeAll { $0.id == entry.id }
     }
-
+    func saveEntries() {
+        if let data = try? JSONEncoder().encode(entries) {
+            UserDefaults.standard.set(data, forKey: "journalEntries")
+        }
+    }
+    func loadEntries() {
+        if let data = UserDefaults.standard.data(forKey: "journalEntries"),
+           let savedEntries = try? JSONDecoder().decode([JournalEntry].self, from: data) {
+            entries = savedEntries
+        }
+    }
+    init() {
+        loadEntries()
+    }
     }
