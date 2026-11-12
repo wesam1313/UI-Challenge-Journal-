@@ -7,6 +7,7 @@ struct ContentView: View {
     @State private var showingEditor = false
     @State private var entryToDelete: JournalEntry?
     @State private var sortByBookmark = false
+    @State private var entryToEdit: JournalEntry?
     private var filteredEntries: [JournalEntry] {
         let filtered = viewModel.entries.filter {
             searchText.isEmpty ||
@@ -83,6 +84,10 @@ struct ContentView: View {
                                         .padding(.top, 10)
                                 }
                                 .listRowSeparator(.hidden)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    entryToEdit = entry
+                                }
                                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                     Button(role: .destructive) {
                                         entryToDelete = entry
@@ -96,6 +101,7 @@ struct ContentView: View {
                     .listStyle(.insetGrouped)
                     .listSectionSpacing(16)
                     .scrollContentBackground(.hidden)
+            
 
                     
                     
@@ -122,7 +128,11 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showingEditor) {
-                JournalEditorView()
+                JournalEditorView(viewModel: viewModel)
+            }
+            .sheet(item: $entryToEdit) { entry in
+                JournalEditorView(viewModel: viewModel, entry: entry)
+            }
             }
             .alert("Delete Journal?", isPresented: Binding(
                 get: { entryToDelete != nil },
@@ -145,7 +155,7 @@ struct ContentView: View {
             .preferredColorScheme(.dark)
         }
     }
-}
+
 
 #Preview {
     ContentView()
