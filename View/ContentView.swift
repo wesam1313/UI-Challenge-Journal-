@@ -1,12 +1,17 @@
 
 import SwiftUI
 
+enum SortOption {
+    case bookmark
+    case entryDate
+}
+
 struct ContentView: View {
     @StateObject private var viewModel = JournalViewModel()
     @State private var searchText = ""
     @State private var showingEditor = false
     @State private var entryToDelete: JournalEntry?
-    @State private var sortByBookmark = false
+    @State private var sortOption: SortOption = .entryDate
     @State private var entryToEdit: JournalEntry?
     private var filteredEntries: [JournalEntry] {
         let filtered = viewModel.entries.filter {
@@ -15,7 +20,7 @@ struct ContentView: View {
             $0.content.localizedCaseInsensitiveContains(searchText)
         }
 
-        if sortByBookmark {
+        if sortOption == .bookmark {
             return filtered.sorted {
                 if $0.isBookmarked == $1.isBookmarked {
                     return $0.date > $1.date
@@ -113,11 +118,11 @@ struct ContentView: View {
             .toolbar {
                 Menu {
                     Button("Sort by Bookmark") {
-                        sortByBookmark = true
+                        sortOption = .bookmark
                     }
 
                     Button("Sort by Entry Date") {
-                        sortByBookmark = false
+                        sortOption = .entryDate
                     }
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease")
